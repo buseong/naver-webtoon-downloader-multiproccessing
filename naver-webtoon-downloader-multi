@@ -5,9 +5,7 @@ import multiprocessing
 import shutil
 import numpy as np
 import os
-
 url_arr = []
-
 def downloader(ls):
     html = urllib.request.urlopen('https://comic.naver.com/webtoon/weekday')
     Soup = BeautifulSoup(html.read(), "html.parser")
@@ -19,7 +17,6 @@ def downloader(ls):
             if len(i) == 40:
                 temp = "https://comic.naver.com" + str(i)
                 url_arr.append(temp)
-
     for lanm in ls:
         opener = urllib.request.build_opener()
         opener.addheaders = [('User-Agent',
@@ -38,7 +35,6 @@ def downloader(ls):
             id = url[45:51]
             weekday = url[60:]
             adap = url
-        print(id,weekday)
         html = urllib.request.urlopen(adap)
         Soup = BeautifulSoup(html.read(), "html.parser")
         html.close()
@@ -47,14 +43,14 @@ def downloader(ls):
         eposide_title = str(get_title[0]).lstrip('<span class="title">').rstrip('</span>')
         k = 0
         for get_url in get_url:
-            k+=1
+            k += 1
             i = get_url['href']
-            if k%2==0:
+            if k % 2 == 0:
                 if 'weekday' in i:
                     if 'no' in i:
                         nu = (i.lstrip(f'/webtoon/detail?titleId={id}').lstrip(r'&no=').rstrip(weekday).rstrip(
                             r'&weekday='))
-                        arr.append(int(nu) - 1)
+                        arr.append(int(nu))
         maxValue = np.max(arr)
         brr = []
         for l in range(int(maxValue)):
@@ -64,8 +60,8 @@ def downloader(ls):
         basic_file = os.getcwd().replace("\\","/")
         new_img = None
         flod_path = str(id)
-        print(flod_path)
         for epsoide in brr:
+            print(f'{eposide_title} {la}/{maxValue}화 작업중')
             try:
                 os.makedirs(f"{basic_file}/{eposide_title}/{la}")
             except:
@@ -81,7 +77,7 @@ def downloader(ls):
             img_url = Soup.select('img')
             for img_url in img_url:
                 j = img_url.get('src')
-                if j == None:
+                if j is None:
                     pass
                 elif 'IMAG01' in j:
                     custom_img.append(j)
@@ -92,7 +88,6 @@ def downloader(ls):
                 img_path = basic_file + f"/{flod_path}/" + str(num) + '.jpg'
                 urllib.request.urlretrieve(image_url, img_path)
                 img_arr.append(img_path)
-            print(str(flod_path) + 'complete download image for edit')
             number += 1
             for i in range(len(img_arr) - 1):
                 if i == 0:
@@ -105,7 +100,6 @@ def downloader(ls):
                 new_img = Image.new('RGB', (first_img_size[0], first_img_size[1] + (second_img_size[1])), (255, 255, 255))
                 new_img.paste(first_img, (0, 0))
                 new_img.paste(second_img, (0, first_img_size[1]))
-            print(str(flod_path) + 'complete paste')
             n = 1
             cut_img_y = 0
             img = new_img
@@ -147,9 +141,26 @@ def reply(final_arr):
     for z in range(len(final_arr) - (len(p3) * 3)):
         p4.append(z + p3[int(len(final_arr) / 4) - 1] + 1)
 
-    return p1,p2,p3,p4
+    return p1, p2, p3, p4
 
 if __name__ == '__main__':
+    url = 'https://comic.naver.com/webtoon/weekday'
+
+    html = urllib.request.urlopen(url)
+    Soup = BeautifulSoup(html.read(), "html.parser")
+    html.close()
+
+    get_main_url = Soup.select('a')
+    main_page_url = []
+    for get_main_url in get_main_url:
+
+        i = get_main_url['href']
+
+        if 'titleId' in i:
+            if 'weekday' in i:
+                main_page_url.append('https://comic.naver.com' + str(i))
+
+    url_arr = main_page_url
 
     brr = [reply(url_arr)]
     pool = multiprocessing.Pool(processes=4)
