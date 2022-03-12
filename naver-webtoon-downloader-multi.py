@@ -12,14 +12,16 @@ def downloader(ls):
     html.close()
     get_url = Soup.select('a')
     for get_url in get_url:
-        i = get_url['href']
+        j = get_url['href']
+        i = "https://comic.naver.com" + str(j)
         if 'weekday=' and 'list?' in i:
-            if len(i) == 40:
+            if len(i) == 63:
                 if i in url_arr:
                     pass
                 else:
-                    temp = "https://comic.naver.com" + str(i)
-                    url_arr.append(temp)
+                    url_arr.append(i)
+    print(url_arr)
+    print(ls)
     for lanm in ls:
         print(url_arr[lanm])
         opener = urllib.request.build_opener()
@@ -65,9 +67,8 @@ def downloader(ls):
         new_img = None
         flod_path = str(id)
         for epsoide in brr:
-            if la == maxValue:
-                print(f'{eposide_title} pass')
-                break
+            if la == maxValue+1:
+                print(f'{eposide_title} is overflow')
             print(f"{eposide_title} {la}/{maxValue}화 작업중")
             try:
                 os.makedirs(f"{basic_file}/{eposide_title}/{la}")
@@ -157,14 +158,14 @@ if __name__ == '__main__':
     html.close()
     get_url = Soup.select('a')
     for get_url in get_url:
-        i = get_url['href']
+        j = get_url['href']
+        i = "https://comic.naver.com" + str(j)
         if 'weekday=' and 'list?' in i:
-            if len(i) == 40:
+            if len(i) == 63:
                 if i in url_arr:
                     pass
                 else:
-                    temp = "https://comic.naver.com" + str(i)
-                    url_arr.append(temp)
+                    url_arr.append(i)
     brr = [reply(url_arr)]
     pool = multiprocessing.Pool(processes=4)
     for i in range(3):
