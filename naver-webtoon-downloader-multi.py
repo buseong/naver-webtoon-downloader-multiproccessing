@@ -114,15 +114,14 @@ def downloader(ls):
             pix = np.array(img)
             num = 0
             for j in range(img.size[1]):
-                i = np.arange(0, 690)
+                i = np.arange(0, img.size[0])
                 judge = pix[j][i]
-                if np.max(judge) == np.min(judge) == 255:
-                    num += 1
-                elif np.max(judge) == np.min(judge) == 0:
+                if np.max(judge) == np.min(judge) == 255 or \
+                        np.max(judge) == np.min(judge) == 0:
                     num += 1
                 if num == 300:
-                    cut_img = img.crop((0, cut_img_y, 690, j))
-                    if int(cut_img.size[1]) == 300:
+                    cut_img = img.crop((0, cut_img_y, img.size[0], j))
+                    if int(cut_img.size[1]) <= 300:
                         n = n - 1
                     else:
                         try:
