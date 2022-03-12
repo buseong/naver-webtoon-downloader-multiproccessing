@@ -6,8 +6,9 @@ import shutil
 import numpy as np
 import os
 
+url_arr = []
+
 def downloader(ls):
-    url_arr = []
     html = urllib.request.urlopen('https://comic.naver.com/webtoon/weekday')
     Soup = BeautifulSoup(html.read(), "html.parser")
     html.close()
@@ -157,4 +158,3 @@ if __name__ == '__main__':
         pool.close()
         pool.join()
     print('done work')
-    
