@@ -20,8 +20,6 @@ def downloader(ls):
                 else:
                     temp = "https://comic.naver.com" + str(i)
                     url_arr.append(temp)
-    print(url_arr)
-    print(ls)
     for lanm in ls:
         print(url_arr[lanm])
         opener = urllib.request.build_opener()
