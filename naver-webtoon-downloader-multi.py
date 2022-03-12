@@ -15,9 +15,13 @@ def downloader(ls):
         i = get_url['href']
         if 'weekday=' and 'list?' in i:
             if len(i) == 40:
-                temp = "https://comic.naver.com" + str(i)
-                url_arr.append(temp)
+                if i in url_arr:
+                    pass
+                else:
+                    temp = "https://comic.naver.com" + str(i)
+                    url_arr.append(temp)
     for lanm in ls:
+        print(url_arr[lanm])
         opener = urllib.request.build_opener()
         opener.addheaders = [('User-Agent',
                               'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
@@ -61,7 +65,10 @@ def downloader(ls):
         new_img = None
         flod_path = str(id)
         for epsoide in brr:
-            print(f'{eposide_title} {la}/{maxValue}화 작업중')
+            if la == maxValue:
+                print(f'{eposide_title} pass')
+                break
+            print(f"{eposide_title} {la}/{maxValue}화 작업중")
             try:
                 os.makedirs(f"{basic_file}/{eposide_title}/{la}")
             except:
@@ -144,24 +151,20 @@ def reply(final_arr):
     return p1, p2, p3, p4
 
 if __name__ == '__main__':
-    url = 'https://comic.naver.com/webtoon/weekday'
 
-    html = urllib.request.urlopen(url)
+    html = urllib.request.urlopen('https://comic.naver.com/webtoon/weekday')
     Soup = BeautifulSoup(html.read(), "html.parser")
     html.close()
-
-    get_main_url = Soup.select('a')
-    main_page_url = []
-    for get_main_url in get_main_url:
-
-        i = get_main_url['href']
-
-        if 'titleId' in i:
-            if 'weekday' in i:
-                main_page_url.append('https://comic.naver.com' + str(i))
-
-    url_arr = main_page_url
-
+    get_url = Soup.select('a')
+    for get_url in get_url:
+        i = get_url['href']
+        if 'weekday=' and 'list?' in i:
+            if len(i) == 40:
+                if i in url_arr:
+                    pass
+                else:
+                    temp = "https://comic.naver.com" + str(i)
+                    url_arr.append(temp)
     brr = [reply(url_arr)]
     pool = multiprocessing.Pool(processes=4)
     for i in range(3):
