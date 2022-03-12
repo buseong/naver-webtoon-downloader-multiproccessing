@@ -6,9 +6,8 @@ import shutil
 import numpy as np
 import os
 
-url_arr = []
-
 def downloader(ls):
+    url_arr = []
     html = urllib.request.urlopen('https://comic.naver.com/webtoon/weekday')
     Soup = BeautifulSoup(html.read(), "html.parser")
     html.close()
@@ -19,6 +18,7 @@ def downloader(ls):
             if len(i) == 40:
                 temp = "https://comic.naver.com" + str(i)
                 url_arr.append(temp)
+
     for lanm in ls:
         opener = urllib.request.build_opener()
         opener.addheaders = [('User-Agent',
@@ -129,8 +129,8 @@ def downloader(ls):
                     cut_img_y = j
                     num = 0
                     n += 1
-            shutil.rmtree(basic_file + flod_path, ignore_errors=True)
             la += 1
+            shutil.rmtree(basic_file + flod_path, ignore_errors=True)
 
 def reply(final_arr):
     p1 = []
@@ -149,19 +149,12 @@ def reply(final_arr):
     return p1,p2,p3,p4
 
 if __name__ == '__main__':
-    url = 'https://comic.naver.com/webtoon/weekday'
-    html = urllib.request.urlopen(url)
-    Soup = BeautifulSoup(html.read(), "html.parser")
-    html.close()
-    get_main_url = Soup.select('a')
-    for get_main_url in get_main_url:
-        i = get_main_url['href']
-        if 'titleId' in i:
-            if 'weekday' in i:
-                url_arr.append('https://comic.naver.com' + str(i))
+
     brr = [reply(url_arr)]
     pool = multiprocessing.Pool(processes=4)
     for i in range(3):
         pool.map(downloader, brr[i])
         pool.close()
         pool.join()
+    print('done work')
+    
