@@ -58,11 +58,11 @@ def downloader(ls):
                 print(f'{eposide_title} is overflow')
             print(f"{eposide_title} {la}/{maxValue}화 작업중")
             try:
-                os.makedirs(f"webtoon/{basic_file}/{eposide_title}/{la}")
+                os.makedirs(f"{basic_file}/webtoon/{eposide_title}/{la}")
             except (Exception,):
-                print(f'didnt make webtoon/{basic_file}/{eposide_title}/{la}')
+                print(f'didnt make {basic_file}/webtoon/{eposide_title}/{la}')
             try:
-                os.mkdir(flod_path)
+                os.mkdir("webtoon/"+flod_path)
             except (Exception,):
                 pass
             custom_img = []
@@ -80,7 +80,7 @@ def downloader(ls):
             img_arr = []
             for image_url in custom_img:
                 down_num += 1
-                img_path = basic_file + f"/{flod_path}/" + str(down_num) + '.jpg'
+                img_path = basic_file + "/webtoon" + f"/{flod_path}/" + str(down_num) + '.jpg'
                 urllib.request.urlretrieve(image_url, img_path)
                 img_arr.append(img_path)
             number += 1
@@ -118,10 +118,10 @@ def downloader(ls):
                             back_second_img = Image.new('RGB', (0, int(cut_img.size[1]) / 2), (255, 255, 255))
                             back_img.paste(cut_img, 0, cut_img.size[1] / 2)
                             back_second_img.paste(cut_img, 0, cut_img.size[1])
-                            back_img.save(f"webtoon/{basic_file}/{eposide_title}/{la}/{n - 1}.jpg")
+                            back_img.save(f"{basic_file}/webtoon/{eposide_title}/{la}/{n - 1}.jpg")
                             back_second_img.save(f"{basic_file}/{eposide_title}/{la}/{n}.jpg")
                         else:
-                            cut_img.save(f"webtoon/{basic_file}/{eposide_title}/{la}/{n}.jpg")
+                            cut_img.save(f"{basic_file}/webtoon/{eposide_title}/{la}/{n}.jpg")
                     cut_img_y = pixel_y
                     counter = 0
                     n += 1
@@ -135,15 +135,14 @@ def reply(arag, numer):
     arr = [[], ]
     count = 0
     last = 1
-    for nam in range(k * numer):
-        if nam is (k * last):
+    for ch_nam in range(k * numer):
+        if ch_nam == (k * last):
             arr.append([], )
             count += 1
             last += 1
-        else:
-            arr[count].append(arag[nam])
-    for el_nam in range(el):
-        k = len(arag) - el_nam - 1
+        arr[count].append(arag[ch_nam])
+    for el_ch in range(el):
+        k = len(arag) - el_ch - 1
         arr[numer - 1].append(arag[k])
     return arr
 
