@@ -149,6 +149,7 @@ def reply(arag, numer):
 
 
 if __name__ == '__main__':
+    url_arr = []
     html = urllib.request.urlopen('https://comic.naver.com/webtoon/weekday')
     Soup = BeautifulSoup(html.read(), "html.parser")
     html.close()
