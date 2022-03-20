@@ -5,7 +5,6 @@ import multiprocessing
 import shutil
 import numpy as np
 import os
-url_arr = []
 
 
 def downloader(ls):
