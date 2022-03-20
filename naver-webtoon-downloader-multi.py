@@ -22,15 +22,15 @@ def downloader(ls):
                     url_arr.append(i)
     print(url_arr)
     print(ls)
-    for lanm in ls:
-        print(url_arr[lanm])
+    for lang in ls:
+        print(url_arr[lang])
         opener = urllib.request.build_opener()
         opener.addheaders = [('User-Agent',
                               'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
         urllib.request.install_opener(opener)
         number = 1
         arr = []
-        inputer = url_arr[lanm]
+        inputer = url_arr[lang]
         if 'no' in inputer:
             url = inputer
             id = url[47:53]
@@ -134,21 +134,25 @@ def downloader(ls):
             la += 1
             shutil.rmtree(basic_file + flod_path, ignore_errors=True)
 
-def reply(final_arr):
-    p1 = []
-    p2 = []
-    p3 = []
-    p4 = []
-    for j in range(int(len(final_arr) / 4)):
-        p1.append(j)
-    for k in range(int(len(final_arr) / 4)):
-        p2.append(k + p1[int(len(final_arr) / 4) - 1] + 1)
-    for l in range(int(len(final_arr) / 4)):
-        p3.append(l + p2[int(len(final_arr) / 4) - 1] + 1)
-    for z in range(len(final_arr) - (len(p3) * 3)):
-        p4.append(z + p3[int(len(final_arr) / 4) - 1] + 1)
-
-    return p1, p2, p3, p4
+def reply(arag, num):
+    
+    k = int(len(arag) / num)
+    l = len(arag) % num
+    arr = [[], ]
+    count = 0
+    last = 1
+    for i in range(len(arag)):
+        if i is k * num:
+            break
+        if i is k * last:
+            arr.append([], )
+            count += 1
+            last += 1
+        arr[count].append(arag[i])
+    for i in range(l):
+        k = len(arag) - i
+        arr[int(num - 1)].append(k)
+    return arr
 
 if __name__ == '__main__':
 
@@ -165,7 +169,8 @@ if __name__ == '__main__':
                     pass
                 else:
                     url_arr.append(i)
-    brr = [reply(url_arr)]
+    num = multiprocessing.cpu_count()
+    brr = [reply(url_arr, num)]
     pool = multiprocessing.Pool(processes=4)
     for i in range(3):
         pool.map(downloader, brr[i])
