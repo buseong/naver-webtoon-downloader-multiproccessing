@@ -110,8 +110,8 @@ if __name__ == '__main__':
     num = multiprocessing.cpu_count()
     brr = [etc.sort_num(url_arr, num)]
     pool = multiprocessing.Pool(processes=num)
-    # for i in range(int(num)):
-    #     pool.map(downloader, brr[i])
-    #     pool.close()
-    #     pool.join()
-    # print('done work')
+    for i in range(int(num)):
+        pool.map(downloader, brr[i])
+        pool.close()
+        pool.join()
+    print('done work')
