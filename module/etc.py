@@ -2,21 +2,25 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 
-def get_all_wt():
-    url_arr = []
-    html = urllib.request.urlopen('https://comic.naver.com/webtoon/weekday')
+def get_id_wk(url):
+
+    if 'no' in url:
+        url = url
+        ider = url[47:53]
+        weekday = url[68:]
+        adap = "https://comic.naver.com/webtoon/list?titleId=" + str(ider) + "&weekday=" + str(weekday)
+    else:
+        ider = url[45:51]
+        weekday = url[60:]
+        adap = url
+
+    return adap, ider, weekday
+
+
+def get_soup(url):
+
+    html = urllib.request.urlopen(url)
     Soup = BeautifulSoup(html.read(), "html.parser")
     html.close()
-    get_url = Soup.select('a')
-    for get_url in get_url:
-        j = get_url['href']
-        i = "https://comic.naver.com" + str(j)
-        if 'weekday=' and 'list?' in i:
-            if len(i) == 63:
-                if i in url_arr:
-                    pass
-                else:
-                    url_arr.append(i)
 
-    return url_arr
-
+    return Soup
